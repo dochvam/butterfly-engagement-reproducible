@@ -1,0 +1,13 @@
+species_taxonomy.csv
+grid_summary_east.csv
+grid_summary_west.csv
+gridcts_east.csv
+gridcts_west.csv
+ind_results
+lpmtx
+spec_summary_east.csv
+spec_summary_west.csv
+target_species.csv
+summary_df_fam.csv
+summary_df_feature.csv
+summary_df_traits.csv

@@ -1,0 +1,2 @@
+
+The "intermediate" folder is used to catch and store output from intermediate processes (e.g. processed data, GAMs) during the data workflow

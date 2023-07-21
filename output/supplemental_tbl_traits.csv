@@ -1,0 +1,7 @@
+Parameter,Estimate,Std. error,95% CI
+Intercept,0.055,0.027,"(0.002, 0.107)"
+wingspanscaled,0.008,0.029,"(-0.05, 0.066)"
+featureDiversityscaled,0.08,0.028,"(0.027, 0.136)"
+colorDiversityscaled,0.045,0.027,"(-0.01, 0.098)"
+genusIDratescaled,0.108,0.029,"(0.051, 0.164)"
+eButterflylogcountscaled,-0.053,0.028,"(-0.108, 0.002)"
