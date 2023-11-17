@@ -18,13 +18,14 @@ region_shapes <- c("east" = "square",
 source("code/maketraits.R")
 
 trait_cols <- c("colorDiversity_scaled", "featureDiversity_scaled",
-                "wingspan_scaled", "genus_IDrate_scaled")
+                "wingspan_scaled", "genus_IDrate_scaled", "is_migratory")
 
 # Make a summary of which fields we do and don't have for each species we modeled
 species_traits <- inds_wtraits %>% 
   select(species, all_of(trait_cols)) %>% 
   distinct()
 colMeans(is.na(species_traits))
+cor(species_traits[, trait_cols])
 
 
 inds_east <- inds_wtraits %>% 
@@ -32,50 +33,55 @@ inds_east <- inds_wtraits %>%
   select(species, region, difference, diff_SE, 
          featureDiversity_scaled, colorDiversity_scaled, 
          eButterfly_logcount_scaled,
-         wingspan_scaled, genus_IDrate_scaled) %>% 
+         wingspan_scaled, genus_IDrate_scaled,
+         is_migratory) %>% 
   na.omit()
 inds_west <- inds_wtraits %>% 
   filter(region == "West") %>% 
   select(species, region, difference, diff_SE, 
          featureDiversity_scaled, colorDiversity_scaled, 
          eButterfly_logcount_scaled,
-         wingspan_scaled, genus_IDrate_scaled) %>% 
+         wingspan_scaled, genus_IDrate_scaled,
+         is_migratory) %>% 
   na.omit()
 
 
 
 #### Traits metaanalysis ####
 
-# Estimate a brms model separately for each region
-brm_mod_east <- brm(
-  difference | se(diff_SE) ~ 
-    wingspan_scaled + featureDiversity_scaled + 
-    colorDiversity_scaled + genus_IDrate_scaled +
-    eButterfly_logcount_scaled +
-    (1|species), 
-  prior = prior_string("normal(0, 5)", class = "b") +
-    prior_string("cauchy(0, 5)", class = "sd"),
-  data = inds_east, cores = 1) ## could add cores = ...
-
-brm_mod_west <- brm(
-  difference | se(diff_SE) ~ 
-    wingspan_scaled + featureDiversity_scaled + 
-    colorDiversity_scaled + genus_IDrate_scaled +
-    eButterfly_logcount_scaled +
-    (1|species),
-  prior = prior_string("normal(0, 5)", class = "b") +
-    prior_string("cauchy(0, 5)", class = "sd"),
-  data = inds_west,
-  cores = 1)
+# # Estimate a brms model separately for each region
+# brm_mod_east <- brm(
+#   difference | se(diff_SE) ~ 
+#     wingspan_scaled + featureDiversity_scaled + 
+#     colorDiversity_scaled + genus_IDrate_scaled +
+#     eButterfly_logcount_scaled +
+#     (1|species), 
+#   prior = prior_string("normal(0, 5)", class = "b") +
+#     prior_string("cauchy(0, 5)", class = "sd"),
+#   data = inds_east, cores = 1) ## could add cores = ...
+# 
+# brm_mod_west <- brm(
+#   difference | se(diff_SE) ~ 
+#     wingspan_scaled + featureDiversity_scaled + 
+#     colorDiversity_scaled + genus_IDrate_scaled +
+#     eButterfly_logcount_scaled +
+#     (1|species),
+#   prior = prior_string("normal(0, 5)", class = "b") +
+#     prior_string("cauchy(0, 5)", class = "sd"),
+#   data = inds_west,
+#   cores = 1)
 
 
 inds_both <- bind_rows(inds_east, inds_west) %>% 
   mutate(species_region = as.factor(paste0(region, "_", species)))
+
+
 brm_mod_both <- brm(
   difference | se(diff_SE) ~ 
     wingspan_scaled + featureDiversity_scaled + 
     colorDiversity_scaled + genus_IDrate_scaled +
-    eButterfly_logcount_scaled +
+    eButterfly_logcount_scaled + 
+    is_migratory + 
     (1|species/species_region),
   prior = prior_string("normal(0, 5)", class = "b") +
     prior_string("cauchy(0, 5)", class = "sd"),

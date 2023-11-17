@@ -32,13 +32,13 @@ summary_df_feature <- read_csv("output/summary_df_feature.csv")
 
 traitplot <- summary_df_traits %>%
   filter(param != "Intercept") %>%
-  filter(region == "joint") %>%
+  # filter(region == "joint") %>%
   mutate(param = recode(param, "wingspanscaled" = "Wingspan",
                         "genusIDratescaled" = "Ease of ID",
                         "colorDiversityscaled" = "Color diversity",
                         "eButterflylogcountscaled" = "Prevalence",
                         "featureDiversityscaled" = "Feature diversity")) %>%
-  ggplot(aes(paste0("\t", param), Estimate, ymin = `l-95% CI`, ymax = `u-95% CI`,
+  ggplot(aes(paste0(param), Estimate, ymin = `l-95% CI`, ymax = `u-95% CI`,
              shape = sign(`l-95% CI`) == sign(`u-95% CI`))) +
   geom_pointrange(position = position_dodge(width = 0.5),
                   show.legend = FALSE) +
@@ -46,6 +46,7 @@ traitplot <- summary_df_traits %>%
   theme_minimal() +
   scale_shape_manual(values = c(1, 19)) +
   coord_flip() +
+  theme(axis.text = element_text(color = "black")) +
   # scale_color_manual("", values = region_colors) +
   # scale_shape_manual("", values = region_shapes) +
   xlab("") + ylab("Estimated effect (95%CI)") +
@@ -62,6 +63,7 @@ colorplot <- summary_df_color %>%
   geom_hline(yintercept = 0) +
   theme_minimal() +
   coord_flip() +
+  theme(axis.text = element_text(color = "black")) +
   scale_shape_manual(values = c(1, 19)) +
   # scale_color_manual("", values = region_colors) +
   # scale_shape_manual("", values = region_shapes) +
@@ -92,6 +94,7 @@ featureplot <- summary_df_feature %>%
   geom_hline(yintercept = 0) +
   theme_minimal() +
   coord_flip() +
+  theme(axis.text = element_text(color = "black")) +
   scale_shape_manual(values = c(1, 19)) +
   # scale_color_manual("", values = region_colors) +
   # scale_shape_manual("", values = region_shapes) +
@@ -122,6 +125,18 @@ this_inds <- inds_wtraits %>%
   mutate(specs_in_both = n() > 1) %>% 
   ungroup() %>% 
   filter(!specs_in_both | region == "East")
+
+# Counts by taxon
+simple_counts_byfam <- this_inds %>% 
+  ggplot() +
+  geom_bar(aes(sig_type, fill = sig_type)) +
+  scale_fill_manual("", values = color_scale) +
+  xlab("") + ylab("Num. species") +
+  theme_minimal() + coord_flip() +
+  theme(legend.position = "right", axis.text.y = element_blank(), 
+        text = element_text(color = "black")) +
+  facet_wrap(~family, ncol = 1)
+ggsave("plots/figS5_family_cts.jpg", width = 3.5, height = 6)
 
 tree<- read.tree("data/ultra_bi.tre") ## use this one
 source("code/helper_fns.R")

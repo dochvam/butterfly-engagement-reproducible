@@ -18,6 +18,7 @@ inds <- read_csv("output/estimated_indices_fromGAMs.csv")
 
 traits_combined <- readxl::read_xlsx("data/SpeciesListForTraits.xlsx", na = "NA")
 
+
 # flight_traits <- read_csv("data/flightStyleConsensusTraits.csv")
 
 taxonomy <- read_csv("data/iNat_taxonomy.csv") %>%
