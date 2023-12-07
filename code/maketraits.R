@@ -42,7 +42,8 @@ inds_wtraits <-
          featureDiversity_scaled = as.numeric(scale(featureDiversity)),
          wingspan_scaled         = as.numeric(scale(aveWingspan)),
          genus_IDrate_scaled     = as.numeric(scale(genus_IDrate)),
-         eButterfly_logcount_scaled = as.numeric(scale(log(n)))
+         eButterfly_logcount_scaled = as.numeric(scale(log(n))),
+         is_migratory = as.logical(is_migratory)
   ) %>%
   mutate(ymin = difference + qnorm(0.025)*diff_SE,
          ymax = difference + qnorm(0.975)*diff_SE,

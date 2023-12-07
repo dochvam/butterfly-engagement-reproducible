@@ -35,6 +35,7 @@ traitplot <- summary_df_traits %>%
   # filter(region == "joint") %>%
   mutate(param = recode(param, "wingspanscaled" = "Wingspan",
                         "genusIDratescaled" = "Ease of ID",
+                        "ismigratoryTRUE" = "Migratory status",
                         "colorDiversityscaled" = "Color diversity",
                         "eButterflylogcountscaled" = "Prevalence",
                         "featureDiversityscaled" = "Feature diversity")) %>%
