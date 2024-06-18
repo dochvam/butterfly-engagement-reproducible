@@ -1,6 +1,6 @@
-# Identification ease, wing pattern diversity, and family explain taxonomic bias in butterfly observations
+# Logistical and preference bias in participatory science butterfly data
 
-This repository contains all code needed to replicate the analyses performed in "Identification ease, wing pattern diversity, and family explain taxonomic bias in butterfly observations" by Goldstein, Stoudt, Lewthwait, Shirey, Mendoza, and Guzman.
+This repository contains all code needed to replicate the analyses performed in "Logistical and preference bias in participatory science butterfly data" by Goldstein, Stoudt, Lewthwaite, Shirey, Mendoza, and Guzman.
 
 ## Components
 
